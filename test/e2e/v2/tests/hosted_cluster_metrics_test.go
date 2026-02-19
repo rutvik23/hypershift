@@ -32,6 +32,7 @@ import (
 	hyperv1 "github.com/openshift/hypershift/api/hypershift/v1beta1"
 	hcmetrics "github.com/openshift/hypershift/hypershift-operator/controllers/hostedcluster/metrics"
 	npmetrics "github.com/openshift/hypershift/hypershift-operator/controllers/nodepool/metrics"
+	kasmetrics "github.com/openshift/hypershift/control-plane-operator/controllers/hostedcontrolplane/kas"
 	azureutil "github.com/openshift/hypershift/support/azureutil"
 	supportforwarder "github.com/openshift/hypershift/support/forwarder"
 	e2eutil "github.com/openshift/hypershift/test/e2e/util"
@@ -67,6 +68,7 @@ func RegisterHostedClusterMetricsTests(getTestCtx internal.TestContextGetter) {
 	EnsureMetricsForwarderWorkingTest(getTestCtx)
 	EnsureNodeTuningOperatorMetricsEndpointTest(getTestCtx)
 	EnsureKubeSchedulerMetricsEndpointTest(getTestCtx)
+	ValidateCPOMetricsTest(getTestCtx)
 }
 
 func ValidateMetricsTest(getTestCtx internal.TestContextGetter) {
@@ -312,6 +314,7 @@ func EnsureNodeTuningOperatorMetricsEndpointTest(getTestCtx internal.TestContext
 	})
 }
 
+<<<<<<< HEAD
 func EnsureKubeSchedulerMetricsEndpointTest(getTestCtx internal.TestContextGetter) {
 	When("kube-scheduler is running", func() {
 		It("should have functional kube-scheduler metrics endpoints", func() {
@@ -378,10 +381,38 @@ func EnsureKubeSchedulerMetricsEndpointTest(getTestCtx internal.TestContextGette
 						"metrics response should contain Prometheus format data")
 				}, 3*time.Minute, 10*time.Second).Should(Succeed())
 			}
+=======
+func ValidateCPOMetricsTest(getTestCtx internal.TestContextGetter) {
+	When("KAS health metrics are exposed", func() {
+		var tc *internal.TestContext
+
+		BeforeEach(func() {
+			tc = getTestCtx()
+			tc.SkipIfPlatform(hyperv1.NonePlatform)
+			tc.SkipIfVersionBelow(e2eutil.Version51)
+		})
+
+		It("should contain availability and latency data from CPO", func() {
+			kasMetricNames := []string{
+				kasmetrics.KASAvailableMetricName,
+				kasmetrics.KASRequestDurationMetricName,
+			}
+
+			Eventually(func(g Gomega) {
+				mf, err := e2eutil.GetMetricsFromPod(tc.Context, tc.MgmtClient, "control-plane-operator", "control-plane-operator", tc.ControlPlaneNamespace, "8080")
+				g.Expect(err).NotTo(HaveOccurred(), "should be able to get CPO metrics")
+				for _, metricName := range kasMetricNames {
+					family, ok := mf[metricName]
+					g.Expect(ok).To(BeTrue(), "metric %s should be present in CPO metrics", metricName)
+					g.Expect(family.Metric).NotTo(BeEmpty(), "metric %s should have at least one data point", metricName)
+				}
+			}, 5*time.Minute, 10*time.Second).Should(Succeed())
+>>>>>>> 3d7063bdc1 (test(e2e): validate KAS health metrics from CPO pod)
 		})
 	})
 }
 
+<<<<<<< HEAD
 // fetchMetricsViaPortForward port-forwards to a running control plane pod selected by
 // the "app=<componentLabel>" label in hcpNamespace and issues an mTLS GET against
 // metricsPath on podPort. It authenticates with the "metrics-client" secret and trusts
@@ -490,6 +521,8 @@ func fetchMetricsViaPortForward(ctx context.Context, mgmtClient crclient.Client,
 	return string(body), nil
 }
 
+=======
+>>>>>>> 3d7063bdc1 (test(e2e): validate KAS health metrics from CPO pod)
 var _ = Describe("[sig-hypershift][Jira:Hypershift][Feature:Metrics] Hosted Cluster Metrics", Label("hosted-cluster-metrics"), func() {
 	var testCtx *internal.TestContext
 
