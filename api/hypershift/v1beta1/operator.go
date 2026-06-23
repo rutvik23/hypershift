@@ -48,7 +48,6 @@ type ComponentLogLevelSpec struct {
 	//
 	// +optional
 	// +kubebuilder:default=Normal
-	// +kubebuilder:validation:Enum="";Normal;Debug;Trace;TraceAll
 	LogLevel LogLevel `json:"logLevel,omitempty"`
 }
 
