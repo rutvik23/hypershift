@@ -26,7 +26,6 @@ func LogLevelToKlogVerbosity(level hyperv1.LogLevel) int {
 func KASVerbosityLevel(hcp *hyperv1.HostedControlPlane) int {
 	// Structured API field takes priority over deprecated annotation.
 	if hcp.Spec.OperatorConfiguration != nil &&
-		hcp.Spec.OperatorConfiguration.KubeAPIServer != nil &&
 		hcp.Spec.OperatorConfiguration.KubeAPIServer.LogLevel != "" {
 		return LogLevelToKlogVerbosity(hcp.Spec.OperatorConfiguration.KubeAPIServer.LogLevel)
 	}

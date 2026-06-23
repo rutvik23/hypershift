@@ -18,7 +18,7 @@ const (
 	KubevirtDefaultV4InternalSubnet = "100.66.0.0/16"
 )
 
-// +kubebuilder:validation:Enum="";Normal;Debug;Trace;TraceAll
+// +kubebuilder:validation:Enum=Normal;Debug;Trace;TraceAll
 type LogLevel string
 
 var (
@@ -41,13 +41,14 @@ var (
 )
 
 // ComponentLogLevelSpec configures the log verbosity for a hosted control plane component.
+// +kubebuilder:validation:MinProperties=1
 type ComponentLogLevelSpec struct {
 	// logLevel sets the log verbosity for the component.
 	// Valid values are: "Normal", "Debug", "Trace", "TraceAll".
 	// Defaults to "Normal".
 	//
 	// +optional
-	// +kubebuilder:default=Normal
+	// +default="Normal"
 	LogLevel LogLevel `json:"logLevel,omitempty"`
 }
 

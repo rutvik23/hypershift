@@ -2379,10 +2379,10 @@ type OperatorConfiguration struct {
 	//
 	// +optional
 	IngressOperator *IngressOperatorSpec `json:"ingressOperator,omitempty"`
-       
+
 	// kubeAPIServer configures the log verbosity of the kube-apiserver component.
 	// +optional
-	KubeAPIServer *ComponentLogLevelSpec `json:"kubeAPIServer,omitempty"`
+	KubeAPIServer ComponentLogLevelSpec `json:"kubeAPIServer,omitzero"`
 }
 
 // +genclient

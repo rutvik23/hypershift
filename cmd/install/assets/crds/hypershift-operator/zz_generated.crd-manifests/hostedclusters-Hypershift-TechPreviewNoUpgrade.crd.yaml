@@ -4017,7 +4017,6 @@ spec:
                           Valid values are: "Normal", "Debug", "Trace", "TraceAll".
                           Defaults to "Normal".
                         enum:
-                        - ""
                         - Normal
                         - Debug
                         - Trace
@@ -4721,6 +4720,7 @@ spec:
                   kubeAPIServer:
                     description: kubeAPIServer configures the log verbosity of the
                       kube-apiserver component.
+                    minProperties: 1
                     properties:
                       logLevel:
                         default: Normal
@@ -4729,7 +4729,6 @@ spec:
                           Valid values are: "Normal", "Debug", "Trace", "TraceAll".
                           Defaults to "Normal".
                         enum:
-                        - ""
                         - Normal
                         - Debug
                         - Trace
