@@ -402,6 +402,8 @@ func (r *HostedControlPlaneReconciler) reconcileDeletion(ctx context.Context, ho
 			switch code {
 			case "UnauthorizedOperation":
 				r.Log.Error(destroyErr, "Skipping AWS default security group deletion because of unauthorized operation.")
+			case "InvalidIdentityToken":
+				r.Log.Error(destroyErr, "Skipping AWS default security group deletion because of invalid identity token (OIDC provider may be missing).")
 			case "DependencyViolation":
 				r.Log.Error(destroyErr, "Skipping AWS default security group deletion because of dependency violation.")
 			default:
@@ -2911,7 +2913,8 @@ func (r *HostedControlPlaneReconciler) destroyAWSDefaultSecurityGroup(ctx contex
 	// Get the security group to delete. If it no longer exists, then there's nothing to do
 	sg, err := supportawsutil.GetSecurityGroup(ctx, r.ec2Client, awsSecurityGroupFilters(hcp.Spec.InfraID))
 	if err != nil {
-		return "", err
+		code := supportawsutil.AWSErrorCode(err)
+		return code, err
 	}
 	if sg == nil {
 		return "", nil
@@ -2955,7 +2958,8 @@ func (r *HostedControlPlaneReconciler) destroyAWSDefaultSecurityGroup(ctx contex
 	// the delete until it's no longer there.
 	sg, err = supportawsutil.GetSecurityGroup(ctx, r.ec2Client, awsSecurityGroupFilters(hcp.Spec.InfraID))
 	if err != nil {
-		return "", err
+		code := supportawsutil.AWSErrorCode(err)
+		return code, err
 	}
 	if sg != nil {
 		return "", fmt.Errorf("security group still exists, waiting on deletion")
