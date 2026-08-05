@@ -154,6 +154,10 @@ The best PRs to use as a template are the simpler single-capability additions li
 
 ## Source: docs/content/contribute/branch-process.md
 
+---
+title: OCP Branching Tasks
+---
+
 ## OCP Branching Tasks for the HyperShift Team
 These are a set of tasks we need to perform on every OCP branching. We need to:
 
@@ -343,6 +347,64 @@ response to local content and configuration changes, run the following from the
     ```
 
 Visit the site at http://127.0.0.1:8000.
+
+## Visual comparison
+
+When making changes that affect the site's appearance (theme updates, layout
+changes, navigation restructuring), you can generate a visual diff against the
+current `main` branch:
+
+```shell
+cd docs
+make compare
+```
+
+This builds both the base site (from `main`, using mkdocs-material) and the head
+site (from your working tree, using Zensical), screenshots every page with
+Playwright, and produces a pixel-diff report at `compare/output/index.html`.
+
+To view the report locally:
+
+```shell
+make compare-serve
+```
+
+You can also compare against a different ref:
+
+```shell
+make compare BASE=v4.18
+```
+
+To share the report, you can host the `compare/output/` directory on any static
+hosting service. For example, using a GitHub Pages repository:
+
+```shell
+# Clone or create a repo with a gh-pages branch
+git clone git@github.com:<user>/<repo>.git /tmp/compare-site
+cd /tmp/compare-site && git checkout gh-pages
+
+# Copy the report
+rm -rf screenshots-* index.html results.json
+cp -r <hypershift>/docs/compare/output/* .
+
+# Commit and push
+git add -A && git commit -m "Update comparison report"
+git push origin gh-pages
+```
+
+The report will be available at `https://<user>.github.io/<repo>/`.
+
+To start fresh, run:
+
+```shell
+make compare-clean
+```
+
+!!! tip
+
+    The base site is cached in `site-base/` and reused across runs. If you only
+    changed your working tree, the next `make compare` will only rebuild
+    `site-head` and regenerate the diffs.
 
 ## Generate the API reference
 
@@ -4822,6 +4884,10 @@ This implementation provides a secure, autonomous solution that allows HostedClu
 ---
 
 ## Source: docs/content/how-to/agent/other-sdn-providers.md
+
+---
+title: Other SDN providers
+---
 
 This document explains how to create a HostedCluster that runs an SDN provider different from OVNKubernetes. The document assumes that you already have the required infrastructure in place to create HostedClusters.
 
@@ -9447,6 +9513,10 @@ This implementation provides a secure, autonomous solution that allows HostedClu
 ---
 
 ## Source: docs/content/how-to/aws/other-sdn-providers.md
+
+---
+title: Other SDN providers
+---
 
 This document explains how to create a HostedCluster that runs an SDN provider different from OVNKubernetes. The document assumes that you already have the required infrastructure in place to create HostedClusters.
 
@@ -23067,6 +23137,10 @@ After applying this change, the worker nodes will be able to consume the mirror 
 
 ## Source: docs/content/how-to/disconnected/idms-icsp-for-management-clusters.md
 
+---
+title: IDMS/ICSP Config for Management Cluster
+---
+
 ## Configuring disconnected HostedControlPlanes deployments
 
 !!! Note
@@ -30951,6 +31025,10 @@ The list of components restarted are listed below:
 
 ## Source: docs/content/how-to/sdn/other-sdn-providers.md
 
+---
+title: Other SDN providers
+---
+
 This document explains how to create a HostedCluster that runs an SDN provider different from OVNKubernetes. The document assumes that you already have the required infrastructure in place to create HostedClusters.
 
 !!! important
@@ -31753,6 +31831,10 @@ systemctl enable --now dnsmasq-virt
 
 ## Source: docs/content/labs/Dual/hostedcluster/baremetalhost.md
 
+---
+title: Bare Metal Hosts
+---
+
 ## Bare Metal Hosts
 
 A **BareMetalHost** is an openshift-machine-api object that encompasses both physical and logical details, allowing it to be identified by the Metal3 operator. Subsequently, these details are associated with other Assisted Service objects known as Agents. The structure of this object is as follows:
@@ -31886,6 +31968,10 @@ So now, we need to wait until the nodes join the cluster. The Agents will provid
 ---
 
 ## Source: docs/content/labs/Dual/hostedcluster/hostedcluster.md
+
+---
+title: Hosted Cluster Object
+---
 
 In this section, we will focus on all the related objects necessary to achieve a Disconnected Hosted Cluster deployment.
 
@@ -32146,6 +32232,10 @@ After some time, we will have almost all the pieces in place, and the Control Pl
 
 ## Source: docs/content/labs/Dual/hostedcluster/index.md
 
+---
+title: Hosted Cluster Creation
+---
+
 A Hosted Cluster, as mentioned in the documentation here, is essentially an OCP API endpoint managed by Hypershift. In this context, we will also include the term HostedControlPlane to enhance readability and comprehension. This terminology is further explained in the same link.
 
 The Hosted Cluster comprises two main components:
@@ -32158,6 +32248,10 @@ With this foundational understanding, we can commence our Hosted Cluster deploym
 ---
 
 ## Source: docs/content/labs/Dual/hostedcluster/infraenv.md
+
+---
+title: Infra Env
+---
 
 The `InfraEnv` is an Assisted Service object that includes essential details such as the `pullSecretRef` and the `sshAuthorizedKey`. These details are used to create the RHCOS Boot Image customized specifically for the cluster. Below is the structure of this object:
 
@@ -32195,6 +32289,10 @@ clusters-hosted-dual   hosted   2023-09-11T15:14:10Z
 ---
 
 ## Source: docs/content/labs/Dual/hostedcluster/nodepool.md
+
+---
+title: Node Pools
+---
 
 A `NodePool` is a scalable set of worker nodes associated with a HostedCluster. NodePool machine architectures remain consistent within a specific pool and are independent of the underlying machine architecture of the control plane.
 
@@ -32261,6 +32359,10 @@ clusters    hosted-dual   hosted    0                               False       
 ---
 
 ## Source: docs/content/labs/Dual/hostedcluster/worker-nodes.md
+
+---
+title: Worker Nodes
+---
 
 Regarding the worker nodes, if you are working on real bare metal, this step is crucial to ensure that the details set in the `BareMetalHost` are correctly configured. If not, you will need to debug why it's not functioning as expected.
 
@@ -32354,6 +32456,10 @@ This section is primarily focused on Virtual Machines. If you are working with r
 ---
 
 ## Source: docs/content/labs/Dual/hypervisor/network-manager-dispatcher.md
+
+---
+title: Network Manager Dispatcher
+---
 
 This script modifies the system DNS resolver to prioritize pointing to the `dnsmasq` service (configured later). This ensures that virtual machines can resolve the various domains, routes, and registries required for the different steps of the process.
 
@@ -32474,6 +32580,10 @@ For more info about Kcli please visit the official documentation.
 
 ## Source: docs/content/labs/Dual/hypervisor/redfish-for-vms.md
 
+---
+title: BMC Access for Metal3
+---
+
 In a bare metal environment, the preferred approach is to utilize the actual BMC (Baseboard Management Controller) of the nodes used for the management cluster, which can be managed by Metal3 for discovery and provisioning. However, in a virtual environment, this approach is not feasible. As a workaround, we will use `ksushy`, which is an implementation of `sushy-tools`, allowing us to simulate BMCs for the virtual machines.
 
 To configure `ksushy`, execute the following commands:
@@ -32548,6 +32658,10 @@ Please note that this documentation is designed to be followed in a specific seq
 ---
 
 ## Source: docs/content/labs/Dual/mce/agentserviceconfig.md
+
+---
+title: Agent Service Config
+---
 
 The Agent Service Config object is an essential component of the Assisted Service addon included in MCE/ACM, responsible for Baremetal cluster deployment. When the addon is enabled, you must deploy an operand (CRD) named `AgentServiceConfig` to configure it.
 
@@ -32704,6 +32818,10 @@ assisted-service-668b49548-9m7xw                       2/2     Running   5      
 
 ## Source: docs/content/labs/Dual/mce/index.md
 
+---
+title: Multicluster Engine
+---
+
 The Multicluster Engine (MCE) is a component of the ACM bundle. It plays a crucial role in deploying clusters across multiple providers.
 
 ## Credentials and Authorization
@@ -32718,6 +32836,10 @@ Agent Service Config{ .md-button }
 
 ## Source: docs/content/labs/Dual/mce/multicluster-engine.md
 
+---
+title: ACM/MCE Deployment
+---
+
 The deployment of each component will depend on your needs, follow the next links accordingly:
 
 - ACM Deployment
@@ -32731,6 +32853,10 @@ The deployment of each component will depend on your needs, follow the next link
 ---
 
 ## Source: docs/content/labs/Dual/mgmt-cluster/compact-dual.md
+
+---
+title: OpenShift Compact Dual
+---
 
 In this section, we will discuss how to deploy the Openshift management cluster. To do that, we need to have the following files in place:
 
@@ -32840,6 +32966,10 @@ kcli create cluster openshift --pf mgmt-compact-hub-dual.yaml
 
 ## Source: docs/content/labs/Dual/mgmt-cluster/index.md
 
+---
+title: Management Cluster Provisioning
+---
+
 ## Openshift Management Cluster
 
 This section contains the necessary artifacts to set up an Openshift management cluster based on virtual machines using kcli as the primary tool. Another option is to use dev-scripts, which uses a different approach.
@@ -32850,6 +32980,10 @@ Openshift Compact Dual{ .md-button }
 ---
 
 ## Source: docs/content/labs/Dual/mgmt-cluster/network.md
+
+---
+title: Networking
+---
 
 Firstly, we need to ensure that we have the right networks prepared for use in the Hypervisor. These networks will be used to host both the Management and Hosted clusters.
 
@@ -32899,6 +33033,10 @@ type: routed
 
 ## Source: docs/content/labs/Dual/mirror/ICSP-IDMS.md
 
+---
+title: Image Content Policies
+---
+
 Once the mirroring process is complete, you will have two main objects that need to be applied in the Management Cluster:
 
 1. ICSP (Image Content Source Policies) or IDMS (Image Digest Mirror Set).
@@ -32946,6 +33084,10 @@ ICSP and IDMS{ .md-button }
 ---
 
 ## Source: docs/content/labs/Dual/mirror/mirroring.md
+
+---
+title: Mirroring
+---
 
 The mirroring step can take some time to complete, so we recommend starting with this part once the Registry server is up and running.
 
@@ -33125,6 +33267,10 @@ The root folder for the registry is situated at /opt/registry, and it's structur
 
 ## Source: docs/content/labs/Dual/tls-certificates.md
 
+---
+title: TLS Certificates
+---
+
 !!! important
 
     This section is only relevant in disconnected scenarios. If this doesn't apply to your situation, please proceed to the next section.
@@ -33232,6 +33378,10 @@ Data Plane perspective{ .md-button }
 
 ## Source: docs/content/labs/Dual/watching/watching-cp.md
 
+---
+title: Watching the Control Plane
+---
+
 Now it's a matter of waiting for the cluster to finish the deployment, so let's take a look at some useful commands on the Management cluster side:
 
 ```bash
@@ -33256,6 +33406,10 @@ This is how it looks:
 ---
 
 ## Source: docs/content/labs/Dual/watching/watching-dp.md
+
+---
+title: Watching the Data Plane
+---
 
 If you check the Hosted cluster side you can check how the Operators are progressing and what is the status. To do that we will use these commands
 
@@ -33429,6 +33583,10 @@ systemctl enable --now dnsmasq-virt
 
 ## Source: docs/content/labs/IPv4/hostedcluster/baremetalhost.md
 
+---
+title: Bare Metal Hosts
+---
+
 ## Bare Metal Hosts
 
 A **BareMetalHost** is an openshift-machine-api object that encompasses both physical and logical details, allowing it to be identified by the Metal3 operator. Subsequently, these details are associated with other Assisted Service objects known as Agents. The structure of this object is as follows:
@@ -33560,6 +33718,10 @@ So now, we need to wait until the nodes join the cluster. The Agents will provid
 ---
 
 ## Source: docs/content/labs/IPv4/hostedcluster/hostedcluster.md
+
+---
+title: Hosted Cluster Object
+---
 
 In this section, we will focus on all the related objects necessary to achieve a Disconnected Hosted Cluster deployment.
 **Premises**:
@@ -33817,6 +33979,10 @@ After some time, we will have almost all the pieces in place, and the Control Pl
 
 ## Source: docs/content/labs/IPv4/hostedcluster/index.md
 
+---
+title: Hosted Cluster Creation
+---
+
  Hosted Cluster, as mentioned in the documentation here, is essentially an OCP API endpoint managed by Hypershift. In this context, we will also include the term HostedControlPlane to enhance readability and comprehension. This terminology is further explained in the same link.
 
 The Hosted Cluster consists of two main components:
@@ -33829,6 +33995,10 @@ Now, with this foundational understanding, we can proceed with the deployment of
 ---
 
 ## Source: docs/content/labs/IPv4/hostedcluster/infraenv.md
+
+---
+title: Infra Env
+---
 
 The `InfraEnv` is an Assisted Service object that includes essential details such as the `pullSecretRef` and the `sshAuthorizedKey`. These details are used to create the RHCOS Boot Image customized specifically for the cluster. Below is the structure of this object:
 
@@ -33866,6 +34036,10 @@ clusters-hosted-ipv4   hosted   2023-09-11T15:14:10Z
 ---
 
 ## Source: docs/content/labs/IPv4/hostedcluster/nodepool.md
+
+---
+title: Node Pools
+---
 
 A `NodePool` is a scalable set of worker nodes associated with a HostedCluster. NodePool machine architectures remain consistent within a specific pool and are independent of the underlying machine architecture of the control plane.
 
@@ -33932,6 +34106,10 @@ clusters    hosted-ipv4   hosted    0                               False       
 ---
 
 ## Source: docs/content/labs/IPv4/hostedcluster/worker-nodes.md
+
+---
+title: Worker Nodes
+---
 
 Regarding the worker nodes, if you are working on real bare metal, this step is crucial to ensure that the details set in the `BareMetalHost` are correctly configured. If not, you will need to debug why it's not functioning as expected.
 
@@ -34025,6 +34203,10 @@ This section is entirely dedicated to virtual machine environments. If you are w
 ---
 
 ## Source: docs/content/labs/IPv4/hypervisor/network-manager-dispatcher.md
+
+---
+title: Network Manager Dispatcher
+---
 
 This script modifies the system DNS resolver to prioritize pointing to the `dnsmasq` service (configured later). This ensures that virtual machines can resolve the various domains, routes, and registries required for the different steps of the process.
 
@@ -34145,6 +34327,10 @@ For more info about Kcli please visit the official documentation.
 
 ## Source: docs/content/labs/IPv4/hypervisor/redfish-for-vms.md
 
+---
+title: BMC Access for Metal3
+---
+
 In a bare metal environment, the preferred approach is to utilize the actual BMC (Baseboard Management Controller) of the nodes used for the management cluster, which can be managed by Metal3 for discovery and provisioning. However, in a virtual environment, this approach is not feasible. As a workaround, we will use `ksushy`, which is an implementation of `sushy-tools`, allowing us to simulate BMCs for the virtual machines.
 
 To configure `ksushy` we need to execute these commands:
@@ -34217,6 +34403,10 @@ This documentation is structured to be followed in a specific order:
 ---
 
 ## Source: docs/content/labs/IPv4/mce/agentserviceconfig.md
+
+---
+title: Agent Service Config
+---
 
 The Agent Service Config object is an essential component of the Assisted Service addon included in MCE/ACM, responsible for Baremetal cluster deployment. When the addon is enabled, you must deploy an operand (CRD) named `AgentServiceConfig` to configure it.
 
@@ -34373,6 +34563,10 @@ assisted-service-668b49548-9m7xw                       2/2     Running   5      
 
 ## Source: docs/content/labs/IPv4/mce/index.md
 
+---
+title: Multicluster Engine
+---
+
 The Multicluster Engine (MCE) is a component of the ACM bundle. It plays a crucial role in deploying clusters across multiple providers.
 
 ## Credentials and Authorization
@@ -34387,6 +34581,10 @@ Agent Service Config{ .md-button }
 
 ## Source: docs/content/labs/IPv4/mce/multicluster-engine.md
 
+---
+title: ACM/MCE Deployment
+---
+
 The deployment of each component will depend on your needs, follow the next links accordingly:
 
 - ACM Deployment
@@ -34400,6 +34598,10 @@ The deployment of each component will depend on your needs, follow the next link
 ---
 
 ## Source: docs/content/labs/IPv4/mgmt-cluster/compact-ipv4.md
+
+---
+title: OpenShift Compact IPv4
+---
 
 In this section, we will discuss how to deploy the Openshift management cluster. To do that, we need to have the following files in place:
 
@@ -34498,6 +34700,10 @@ kcli create cluster openshift --pf mgmt-compact-hub-ipv4.yaml
 
 ## Source: docs/content/labs/IPv4/mgmt-cluster/index.md
 
+---
+title: Management Cluster Provisioning
+---
+
 ## Openshift Management Cluster
 
 This section contains the necessary artifacts to set up an Openshift management cluster based on virtual machines using kcli as the primary tool. Another option is to use dev-scripts, which uses a different approach.
@@ -34508,6 +34714,10 @@ Openshift Compact Dual{ .md-button }
 ---
 
 ## Source: docs/content/labs/IPv4/mgmt-cluster/network.md
+
+---
+title: Networking
+---
 
 Firstly, we need to ensure that we have the right networks prepared for use in the Hypervisor. These networks will be used to host both the Management and Hosted clusters.
 
@@ -34556,6 +34766,10 @@ type: routed
 
 ## Source: docs/content/labs/IPv4/mirror/ICSP-IDMS.md
 
+---
+title: Image Content Policies
+---
+
 Once the mirroring process is complete, you will have two main objects that need to be applied in the Management Cluster:
 
 1. ICSP (Image Content Source Policies) or IDMS (Image Digest Mirror Set).
@@ -34603,6 +34817,10 @@ ICSP and IDMS{ .md-button }
 ---
 
 ## Source: docs/content/labs/IPv4/mirror/mirroring.md
+
+---
+title: Mirroring
+---
 
 The mirroring step can take some time to complete, so we recommend starting with this part once the Registry server is up and running.
 
@@ -34782,6 +35000,10 @@ The root folder for the registry is situated at /opt/registry, and it's structur
 
 ## Source: docs/content/labs/IPv4/tls-certificates.md
 
+---
+title: TLS Certificates
+---
+
 !!! important
 
     This section is only relevant in disconnected scenarios. If this doesn't apply to your situation, please proceed to the next section.
@@ -34889,6 +35111,10 @@ Data Plane perspective{ .md-button }
 
 ## Source: docs/content/labs/IPv4/watching/watching-cp.md
 
+---
+title: Watching the Control Plane
+---
+
 Now it's a matter of waiting for the cluster to finish the deployment, so let's take a look at some useful commands on the Management cluster side:
 
 ```bash
@@ -34913,6 +35139,10 @@ This is how it looks:
 ---
 
 ## Source: docs/content/labs/IPv4/watching/watching-dp.md
+
+---
+title: Watching the Data Plane
+---
 
 If you check the Hosted cluster side you can check how the Operators are progressing and what is the status. To do that we will use these commands
 
@@ -35079,6 +35309,10 @@ systemctl enable --now dnsmasq-virt
 
 ## Source: docs/content/labs/IPv6/hostedcluster/baremetalhost.md
 
+---
+title: Bare Metal Hosts
+---
+
 ## Bare Metal Hosts
 
 A **BareMetalHost** is an openshift-machine-api object that encompasses both physical and logical details, allowing it to be identified by the Metal3 operator. Subsequently, these details are associated with other Assisted Service objects known as Agents. The structure of this object is as follows:
@@ -35211,6 +35445,10 @@ So now, we need to wait until the nodes join the cluster. The Agents will provid
 ---
 
 ## Source: docs/content/labs/IPv6/hostedcluster/hostedcluster.md
+
+---
+title: Hosted Cluster Object
+---
 
 In this section, we will focus on all the related objects necessary to achieve a Disconnected Hosted Cluster deployment.
 
@@ -35471,6 +35709,10 @@ After some time, we will have almost all the pieces in place, and the Control Pl
 
 ## Source: docs/content/labs/IPv6/hostedcluster/index.md
 
+---
+title: Hosted Cluster Creation
+---
+
  Hosted Cluster, as mentioned in the documentation here, is essentially an OCP API endpoint managed by Hypershift. In this context, we will also include the term HostedControlPlane to enhance readability and comprehension. This terminology is further explained in the same link.
 
 The Hosted Cluster comprises two main components:
@@ -35483,6 +35725,10 @@ With this foundational understanding, we can commence our Hosted Cluster deploym
 ---
 
 ## Source: docs/content/labs/IPv6/hostedcluster/infraenv.md
+
+---
+title: Infra Env
+---
 
 The `InfraEnv` is an Assisted Service object that includes essential details such as the `pullSecretRef` and the `sshAuthorizedKey`. These details are used to create the RHCOS Boot Image customized specifically for the cluster. Below is the structure of this object:
 
@@ -35520,6 +35766,10 @@ clusters-hosted-ipv6   hosted   2023-09-11T15:14:10Z
 ---
 
 ## Source: docs/content/labs/IPv6/hostedcluster/nodepool.md
+
+---
+title: Node Pools
+---
 
 A `NodePool` is a scalable set of worker nodes associated with a HostedCluster. NodePool machine architectures remain consistent within a specific pool and are independent of the underlying machine architecture of the control plane.
 
@@ -35586,6 +35836,10 @@ clusters    hosted-ipv6   hosted    0                               False       
 ---
 
 ## Source: docs/content/labs/IPv6/hostedcluster/worker-nodes.md
+
+---
+title: Worker Nodes
+---
 
 Regarding the worker nodes, if you are working on real bare metal, this step is crucial to ensure that the details set in the `BareMetalHost` are correctly configured. If not, you will need to debug why it's not functioning as expected.
 
@@ -35678,6 +35932,10 @@ This section is primarily focused on Virtual Machines. If you are working with r
 ---
 
 ## Source: docs/content/labs/IPv6/hypervisor/network-manager-dispatcher.md
+
+---
+title: Network Manager Dispatcher
+---
 
 This script modifies the system DNS resolver to prioritize pointing to the `dnsmasq` service (configured later). This ensures that virtual machines can resolve the various domains, routes, and registries required for the different steps of the process.
 
@@ -35798,6 +36056,10 @@ For more info about Kcli please visit the official documentation.
 
 ## Source: docs/content/labs/IPv6/hypervisor/redfish-for-vms.md
 
+---
+title: BMC Access for Metal3
+---
+
 In a bare metal environment, the preferred approach is to utilize the actual BMC (Baseboard Management Controller) of the nodes used for the management cluster, which can be managed by Metal3 for discovery and provisioning. However, in a virtual environment, this approach is not feasible. As a workaround, we will use `ksushy`, which is an implementation of `sushy-tools`, allowing us to simulate BMCs for the virtual machines.
 
 To configure `ksushy` we need to execute these commands:
@@ -35871,6 +36133,10 @@ This documentation is prepared to be followed in a concrete order:
 ---
 
 ## Source: docs/content/labs/IPv6/mce/agentserviceconfig.md
+
+---
+title: Agent Service Config
+---
 
 The Agent Service Config object is an essential component of the Assisted Service addon included in MCE/ACM, responsible for Baremetal cluster deployment. When the addon is enabled, you must deploy an operand (CRD) named `AgentServiceConfig` to configure it.
 
@@ -36027,6 +36293,10 @@ assisted-service-668b49548-9m7xw                       2/2     Running   5      
 
 ## Source: docs/content/labs/IPv6/mce/index.md
 
+---
+title: Multicluster Engine
+---
+
 The Multicluster Engine (MCE) is a component of the ACM bundle. It plays a crucial role in deploying clusters across multiple providers.
 
 ## Credentials and Authorization
@@ -36041,6 +36311,10 @@ Agent Service Config{ .md-button }
 
 ## Source: docs/content/labs/IPv6/mce/multicluster-engine.md
 
+---
+title: ACM/MCE Deployment
+---
+
 The deployment of each component will depend on your needs, follow the next links accordingly:
 
 - ACM Deployment
@@ -36054,6 +36328,10 @@ The deployment of each component will depend on your needs, follow the next link
 ---
 
 ## Source: docs/content/labs/IPv6/mgmt-cluster/compact-ipv6.md
+
+---
+title: OpenShift Compact IPv6
+---
 
 In this section, we will discuss how to deploy the Openshift management cluster. To do that, we need to have the following files in place:
 
@@ -36157,6 +36435,10 @@ kcli create cluster openshift --pf mgmt-compact-hub-ipv6.yaml
 
 ## Source: docs/content/labs/IPv6/mgmt-cluster/index.md
 
+---
+title: Management Cluster Provisioning
+---
+
 ## Openshift Management Cluster
 
 This section contains the necessary artifacts to set up an Openshift management cluster based on virtual machines using kcli as the primary tool. Another option is to use dev-scripts, which uses a different approach.
@@ -36167,6 +36449,10 @@ Openshift Compact Dual{ .md-button }
 ---
 
 ## Source: docs/content/labs/IPv6/mgmt-cluster/network.md
+
+---
+title: Networking
+---
 
 Firstly, we need to ensure that we have the right networks prepared for use in the Hypervisor. These networks will be used to host both the Management and Hosted clusters.
 
@@ -36215,6 +36501,10 @@ type: routed
 
 ## Source: docs/content/labs/IPv6/mirror/ICSP-IDMS.md
 
+---
+title: Image Content Policies
+---
+
 Once the mirroring process is complete, you will have two main objects that need to be applied in the Management Cluster:
 
 1. ICSP (Image Content Source Policies) or IDMS (Image Digest Mirror Set).
@@ -36262,6 +36552,10 @@ ICSP and IDMS{ .md-button }
 ---
 
 ## Source: docs/content/labs/IPv6/mirror/mirroring.md
+
+---
+title: Mirroring
+---
 
 The mirroring step can take some time to complete, so we recommend starting with this part once the Registry server is up and running.
 
@@ -36441,6 +36735,10 @@ The root folder for the registry is situated at /opt/registry, and it's structur
 
 ## Source: docs/content/labs/IPv6/tls-certificates.md
 
+---
+title: TLS Certificates
+---
+
 !!! important
 
     This section is only relevant in disconnected scenarios. If this doesn't apply to your situation, please proceed to the next section.
@@ -36548,6 +36846,10 @@ Data Plane perspective{ .md-button }
 
 ## Source: docs/content/labs/IPv6/watching/watching-cp.md
 
+---
+title: Watching the Control Plane
+---
+
 Now it's a matter of waiting for the cluster to finish the deployment, so let's take a look at some useful commands on the Management cluster side:
 
 ```bash
@@ -36572,6 +36874,10 @@ This is how it looks:
 ---
 
 ## Source: docs/content/labs/IPv6/watching/watching-dp.md
+
+---
+title: Watching the Data Plane
+---
 
 If you check the Hosted cluster side you can check how the Operators are progressing and what is the status. To do that we will use these commands
 
@@ -36654,6 +36960,10 @@ systemctl enable --now libvirtd
 ---
 
 ## Source: docs/content/labs/common/hypervisor/network-manager-dispatcher.md
+
+---
+title: Network Manager Dispatcher
+---
 
 This script modifies the system DNS resolver to prioritize pointing to the `dnsmasq` service (configured later). This ensures that virtual machines can resolve the various domains, routes, and registries required for the different steps of the process.
 
@@ -36800,6 +37110,10 @@ title: Hypervisor Prerequisites
 ---
 
 ## Source: docs/content/labs/common/mce/agentserviceconfig.md
+
+---
+title: Agent Service Config
+---
 
 The Agent Service Config object is an essential component of the Assisted Service addon included in MCE/ACM, responsible for Baremetal cluster deployment. When the addon is enabled, you must deploy an operand (CRD) named `AgentServiceConfig` to configure it.
 
@@ -36956,6 +37270,10 @@ assisted-service-668b49548-9m7xw                       2/2     Running   5      
 
 ## Source: docs/content/labs/common/mce/index.md
 
+---
+title: Multicluster Engine
+---
+
 The Multicluster Engine (MCE) is a component of the ACM bundle. It plays a crucial role in deploying clusters across multiple providers.
 
 ## Credentials and Authorization
@@ -36970,6 +37288,10 @@ Agent Service Config{ .md-button }
 
 ## Source: docs/content/labs/common/mce/multicluster-engine.md
 
+---
+title: ACM/MCE Deployment
+---
+
 The deployment of each component will depend on your needs, follow the next links accordingly:
 
 - ACM Deployment
@@ -36983,6 +37305,10 @@ The deployment of each component will depend on your needs, follow the next link
 ---
 
 ## Source: docs/content/labs/common/mirror/ICSP-IDMS.md
+
+---
+title: Image Content Policies
+---
 
 Once the mirroring process is complete, you will have two main objects that need to be applied in the Management Cluster:
 
@@ -37031,6 +37357,10 @@ ICSP and IDMS{ .md-button }
 ---
 
 ## Source: docs/content/labs/common/mirror/mirroring.md
+
+---
+title: Mirroring
+---
 
 The mirroring step can take some time to complete, so we recommend starting with this part once the Registry server is up and running.
 
@@ -37210,6 +37540,10 @@ The root folder for the registry is situated at /opt/registry, and it's structur
 
 ## Source: docs/content/labs/common/tls-certificates.md
 
+---
+title: TLS Certificates
+---
+
 !!! important
 
     This section is only relevant in disconnected scenarios. If this doesn't apply to your situation, please proceed to the next section.
@@ -37317,6 +37651,10 @@ Data Plane perspective{ .md-button }
 
 ## Source: docs/content/labs/common/watching/watching-cp.md
 
+---
+title: Watching the Control Plane
+---
+
 Now it's a matter of waiting for the cluster to finish the deployment, so let's take a look at some useful commands on the Management cluster side:
 
 ```bash
@@ -37341,6 +37679,10 @@ This is how it looks:
 ---
 
 ## Source: docs/content/labs/common/watching/watching-dp.md
+
+---
+title: Watching the Data Plane
+---
 
 If you check the Hosted cluster side you can check how the Operators are progressing and what is the status. To do that we will use these commands
 
@@ -37559,6 +37901,10 @@ The addon will detect the removal and redeploy the HyperShift Operator with the 
 ---
 
 ## Source: docs/content/recipes/common/control-plane-metrics-forwarding.md
+
+---
+title: Control Plane Metrics Forwarding
+---
 
 ## Enable Control Plane Metrics Forwarding to Hosted Clusters
 
@@ -37881,6 +38227,10 @@ This deletes the `endpoint-resolver` and `metrics-proxy` from the management clu
 ---
 
 ## Source: docs/content/recipes/common/exposing-dataplane-with-metallb.md
+
+---
+title: Expose Data Plane Ingress via MetalLB
+---
 
 ## Configure MetalLB for HostedCluster's Data Plane
 
@@ -58144,6 +58494,10 @@ Note: the kube-apiserver will no longer be exposed through a dedicated LB servic
 
 ## Source: docs/content/reference/architecture/mce-and-agent.md
 
+---
+title: Multicluster Engine and Agent
+---
+
 **Introduction**
 
 This section elucidates the collaboration between Multicluster Engine and Agent to facilitate in-house deployments. Detailed documentation for each of the network stacks can be found in the *Self-Managed Laboratories* section. If you intend to set up a self-managed environment, please proceed to that section and follow the provided steps.
@@ -60110,6 +60464,10 @@ This section of the HyperShift documentation contains references.
 
 ## Source: docs/content/reference/infrastructure/agent.md
 
+---
+title: Agent
+---
+
 The agent platform does not create any infrastructure but does have two kinds of prerequisites:
 
 1. Agents: An Agent represents a host booted with a discovery image and ready to be provisioned as an OpenShift node. For more information, see here.
@@ -60121,6 +60479,10 @@ You can find more details about the prerequisites in the how-to.
 ---
 
 ## Source: docs/content/reference/infrastructure/aws.md
+
+---
+title: AWS
+---
 
 In this section we want to dissect who creates what and what not. It contains 4 stages:
 
@@ -61868,6 +62230,10 @@ services.
 
 ## Source: docs/content/reference/manifests/ibmcloud/4.10.md
 
+---
+title: "4.10"
+---
+
 **HostedCluster**
 
 ```yaml
@@ -62198,6 +62564,10 @@ spec:
 
 ## Source: docs/content/reference/manifests/ibmcloud/4.11.md
 
+---
+title: "4.11"
+---
+
 **HostedCluster**
 
 ```yaml
@@ -62517,6 +62887,10 @@ spec:
 
 ## Source: docs/content/reference/manifests/ibmcloud/4.12.md
 
+---
+title: "4.12"
+---
+
 **HostedCluster**
 
 ```yaml
@@ -62829,6 +63203,10 @@ spec:
 
 ## Source: docs/content/reference/manifests/ibmcloud/4.13.md
 
+---
+title: "4.13"
+---
+
 **HostedCluster**
 
 ```yaml
@@ -63136,6 +63514,10 @@ spec:
 ---
 
 ## Source: docs/content/reference/manifests/ibmcloud/4.9.md
+
+---
+title: "4.9"
+---
 
 **HostedCluster**
 
